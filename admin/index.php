@@ -21,8 +21,10 @@ function admin_perform_post (){
         if($active_tab == 3){ admin_help_head(3); }       
         
         //Redirect to the next page
-        header('Location: '. $_SERVER['REQUEST_URI']);
-        exit();
+        if(!headers_sent()){
+            header('Location: '. $_SERVER['REQUEST_URI']);
+            exit();
+        }
     }
 }
 

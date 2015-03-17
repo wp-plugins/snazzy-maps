@@ -4,7 +4,7 @@ Donate link: https://snazzymaps.com/about
 Tags: google,maps,google maps,styled maps,styles,color,schemes,themes
 Requires at least: 3.5
 Tested up to: 4.1
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,7 +36,7 @@ already have on your site.*
 1. Enjoy your newly styled Snazzy Maps!
 
 *Please note this plugin does not add a Google Map to your page. It simply adds styles to any existing maps that you
-have already added.*
+already have on your site.*
 
 == Frequently Asked Questions ==
 
@@ -52,8 +52,12 @@ added a map yet, search [WordPress Plugins](https://wordpress.org/plugins) for a
 
 = Snazzy Maps doesn't work with my Google Maps plugin! =
 
-We've tested Snazzy Maps with several different Google Maps plugins. If you happen to find one that our plugin doesn't
+We've tested Snazzy Maps with several different Google Maps plugins. If you happen to find one that our plugin doesn't 
 work with please send us an email at support@snazzymaps.com.
+
+Also, the Snazzy Maps plugin cannot apply styles to maps created using the Google Maps Embed API. This is because of 
+fundamental limitations on the way IFrames work on the web. We cannot access the map within Google's IFrame and cannot 
+apply any styles to it. Sorry! Switching to a WordPress plugin that uses Google's JavaScript API will work instead.
 
 = How can I access my favorites or private styles from SnazzyMaps.com? =
 
@@ -72,6 +76,11 @@ work with please send us an email at support@snazzymaps.com.
 3. Your Google Map is now a Snazzy Map!
 
 == Changelog ==
+
+= 1.0.1 =
+Release Date: March 17th, 2015
+
+* Bug Fix: Resolved the "headers already sent" issue that occurred when submitting POSTs with certain themes.
 
 = 1.0.0 =
 Release Date: March 1st, 2015
