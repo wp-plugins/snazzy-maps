@@ -3,7 +3,7 @@
  * Plugin Name: Snazzy Maps
  * Plugin URI: https://snazzymaps.com/plugins
  * Description: Apply styles to your Google Maps with the official Snazzy Maps WordPress plugin.
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: Atmist
  * Author URI: http://atmist.com/
  * License: GPL2
@@ -30,9 +30,28 @@ defined( 'ABSPATH' ) OR exit;
 //This API key is used to explore the styles in snazzy maps
 define('API_BASE', 'https://snazzymaps.com/');
 define('API_KEY', 'ecaccc3c-44fa-486c-9503-5d473587a493');
-    
 
-include(plugin_dir_path(__FILE__) . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'index.php');
+if(!defined('_DS')) {
+    define('_DS', '/');
+}
+
+include(plugin_dir_path(__FILE__) . _DS . 'admin' . _DS . 'index.php');
+include(plugin_dir_path(__FILE__) . _DS . 'additional_php' . _DS . 'Services_JSON.php');
+
+//Required for converting the data returned by the JSON Service
+function _object_to_array($object)
+{
+    if (is_array($object) OR is_object($object))
+    {
+        $result = array(); 
+        foreach($object as $key => $value)
+        { 
+            $result[$key] = _object_to_array($value); 
+        }
+        return $result;
+    }
+    return $object;
+}
 
 function resourceURL($file){
     return plugins_url($file, __FILE__);
@@ -46,13 +65,15 @@ add_action('init', 'init_plugin');
 
 //Pass the style information into the javascript file on the main page
 function enqueue_script() {
-    
     $uniqueStyle = get_option('SnazzyMapDefaultStyle');
     if(!empty($uniqueStyle) && !is_null($uniqueStyle)){
         $handle = 'snazzymaps-js';
-        wp_register_script($handle, plugins_url('snazzymaps.js', __FILE__), array('jquery'));    
-        wp_enqueue_script($handle, $in_footer = true);
-        wp_localize_script($handle, 'SnazzyMapDefaultStyle', $uniqueStyle);
+        wp_enqueue_script($handle, plugins_url('snazzymaps.js', __FILE__), $deps = array('jquery'), $in_footer = true);
+        
+        //We have to use l10n_print_after so we can support older versions of WordPress
+        $json = new Services_JSON();
+        wp_localize_script($handle, 'SnazzyDataForSnazzyMaps', 
+                           array('l10n_print_after' => 'SnazzyDataForSnazzyMaps=' . $json->encode($uniqueStyle)));
     }
 }
 add_action( 'wp_enqueue_scripts', 'enqueue_script');
@@ -62,7 +83,7 @@ add_action( 'wp_enqueue_scripts', 'enqueue_script');
 add_action( 'admin_enqueue_scripts', 'admin_enqueue_script');
 
 function admin_add_custom_menu(){    
-    add_theme_page('Snazzy Maps', 'Snazzy Maps', 'edit_theme_options', 'snazzy_maps', 'admin_add_custom_content');
+    add_theme_page('Snazzy Maps', 'Snazzy Maps', 'edit_themes', 'snazzy_maps', 'admin_add_custom_content');
 }
 add_action( 'admin_menu', 'admin_add_custom_menu');
 
@@ -70,7 +91,7 @@ add_action( 'admin_menu', 'admin_add_custom_menu');
 add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'my_plugin_action_links' );
 
 function my_plugin_action_links( $links ) {
-   array_unshift($links, '<a href="'. get_admin_url(null, 'themes.php?page=snazzy_maps') .'">Settings</a>');
+   array_unshift($links, '<a href="'. admin_url('themes.php?page=snazzy_maps') .'">Settings</a>');
    return $links;
 }
 

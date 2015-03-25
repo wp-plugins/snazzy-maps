@@ -1,12 +1,10 @@
 <?php
 defined( 'ABSPATH' ) OR exit;
 
-
-
-include(plugin_dir_path(__FILE__) . DIRECTORY_SEPARATOR . 'styles.php');
-include(plugin_dir_path(__FILE__) . DIRECTORY_SEPARATOR . 'explore.php');
-include(plugin_dir_path(__FILE__) . DIRECTORY_SEPARATOR . 'settings.php');
-include(plugin_dir_path(__FILE__) . DIRECTORY_SEPARATOR . 'help.php');
+include(plugin_dir_path(__FILE__) . _DS . 'styles.php');
+include(plugin_dir_path(__FILE__) . _DS . 'explore.php');
+include(plugin_dir_path(__FILE__) . _DS . 'settings.php');
+include(plugin_dir_path(__FILE__) . _DS . 'help.php');
 
 
 function admin_perform_post (){
@@ -35,44 +33,37 @@ function admin_enqueue_script($hook){
         
     //Include the javascript
     $handle = 'admin-snazzymaps-js';
-    echo wp_register_script($handle, plugins_url('index.js', __FILE__), array('jquery'));    
-    echo wp_enqueue_script($handle, $deps = array('jquery'));
-    wp_localize_script($handle, 'API_KEY', API_KEY);
-    wp_localize_script($handle, 'API_BASE', API_BASE);
-    wp_localize_script($handle, 'USER_API_KEY', get_option('MySnazzyAPIKey', null));
-    
+    wp_enqueue_script($handle, plugins_url('index.js', __FILE__), $deps = array('jquery'));
+    wp_localize_script($handle, 'SnazzyData', array('API_KEY' => API_KEY,
+                                                  'API_BASE' => API_BASE,
+                                                  'USER_API_KEY' => get_option('MySnazzyAPIKey', null)));
     //Include the node modules
     $node_modules = array(
-        'query-string' . DIRECTORY_SEPARATOR . 'query-string.js',
-        'mustache' . DIRECTORY_SEPARATOR . 'mustache.min.js'
+        'query-string' . _DS . 'query-string.js',
+        'mustache' . _DS . 'mustache.min.js'
     );
     foreach($node_modules as $index => $node_module){
-        $handle = "admin-node-module-$index";
-        echo wp_register_script($handle, 
-                resourceURL('node_modules' . DIRECTORY_SEPARATOR . $node_module)); 
-        echo wp_enqueue_script($handle);
+        wp_enqueue_script("admin-node-module-$index", 
+                resourceURL('node_modules' . _DS . $node_module)); 
     }
     
     //Include the bower components
     $bower_components = array(
-        'history.js' . DIRECTORY_SEPARATOR . 'scripts' . 
-        DIRECTORY_SEPARATOR . 'bundled' . DIRECTORY_SEPARATOR . 'html5' .
-        DIRECTORY_SEPARATOR . 'native.history.js'
+        'history.js' . _DS . 'scripts' . 
+        _DS . 'bundled' . _DS . 'html5' .
+        _DS . 'native.history.js'
     );
     foreach($bower_components as $index => $bower_component){
-        $handle = "admin-bower-component-$index";
-        echo wp_register_script($handle, 
-                resourceURL('bower_components' . DIRECTORY_SEPARATOR . $bower_component)); 
-        echo wp_enqueue_script($handle);
+        wp_enqueue_script("admin-bower-component-$index", 
+                resourceURL('bower_components' . _DS . $bower_component)); 
     }
     
     
     //Include additional javascript
     $additional_js = array('jquery.base64.min.js');
     foreach($additional_js as $index => $js){
-        $handle = "additional-js-$index";
-        echo wp_register_script($handle, resourceURL('additional_js' . DIRECTORY_SEPARATOR . $js)); 
-        echo wp_enqueue_script($handle);
+        wp_enqueue_script("additional-js-$index", 
+              resourceURL('additional_js' . _DS . $js)); 
     }
     
     //Include the css

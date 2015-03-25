@@ -24,34 +24,41 @@ jQuery(document).ready(function($){
         var endPoint = '';
         if(params.type == 'my-styles'){
             endPoint = 'my-styles.json';   
-            data['key'] = USER_API_KEY;
-            if(USER_API_KEY == null){
+            data['key'] = SnazzyData['USER_API_KEY'];
+            if(SnazzyData['USER_API_KEY'] == null){
                 showError('<p>You need to add your API key in the <a href="?page=snazzy_maps&tab=2">Settings</a> tab.</p>');
                 return;
             }
             
         }else if(params.type == 'my-favorites'){
             endPoint = 'favorites.json';               
-            data['key'] = USER_API_KEY;
-            if(USER_API_KEY == null){
+            data['key'] = SnazzyData['USER_API_KEY'];
+            if(SnazzyData['USER_API_KEY'] == null){
                 showError('<p>You need to add your API key in the <a href="?page=snazzy_maps&tab=2">Settings</a> tab.</p>');
                 return;
             }
         }
         else{
             endPoint = 'explore.json';               
-            data['key'] = API_KEY;
+            data['key'] = SnazzyData['API_KEY'];
             $('.missing-api-key').hide();
             $('.results').show();
             $('.pagination').show();
         }
         
         
+        //Clean up the data before getting the response
+        for(var key in data){
+            if(data[key] == undefined || data[key] == null || data[key] == "undefined"){
+                delete data[key];
+            }
+        }
+        
         var failedTimeout = setTimeout(function(){
             showError("<p>Oops, it seems that Snazzy Maps is temporarily down or your API key is incorrect.</p>");
         }, 3000);        
         $.ajax({
-            url: API_BASE + endPoint,
+            url: SnazzyData['API_BASE'] + endPoint,
             jsonp: 'callback',
             data: data,
             dataType: 'jsonp',
@@ -107,25 +114,25 @@ jQuery(document).ready(function($){
         History.replaceState(oldParams, document.title, '?' + queryString.stringify(oldParams));
     };
     
-    $(document).on('change', '#explore-list select', function(){
+    $('#explore-list select').live('change', function(){
         var q = {};
         q[this.name] = $(this).val();
         q['ppage'] = 1; //Reset the page number because we are changing the results
         replaceGET(q);
     });
     
-    $(document).on('submit', '.style', function(){
+    $('.style').live('submit', function(){
         $(this).find('input[name="new_style"]')
                .val($.base64.encode(JSON.stringify($(this).data('style'))));
     });
         
     //Pagination
-    $(document).on('click', '.tablenav-pages a', function(){ 
+    $('.tablenav-pages a').live('click', function(){ 
         replaceGET({ ppage: $(this).data('page') }); 
         return false;
     });
     
-    $(document).on('change', '.current-page', function(){
+    $('.current-page').live('change', function(){
         
         var start = $('.first-page').data('page');
         var end = $('.last-page').data('page');
@@ -172,11 +179,11 @@ jQuery(document).ready(function($){
         $('.tablenav-pages .total-pages').html(options['totalPages']);
         if(options['totalPages'] > 0){
             $('.current-page').val(options['currentPage']);
-            $('.current-page').prop('disabled', false);
+            $('.current-page').attr('disabled', false);
         }
         else{        
             $('.current-page').val(0);
-            $('.current-page').prop('disabled', true);
+            $('.current-page').attr('disabled', true);
         }
                 
     }

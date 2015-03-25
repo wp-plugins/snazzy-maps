@@ -1,6 +1,6 @@
 jQuery(document).ready(function($){    
     try{
-        var style = JSON.parse(SnazzyMapDefaultStyle['json']);
+        var style = JSON.parse(SnazzyDataForSnazzyMaps['json']);
         (function(g, s) {        
             var _map = g.Map;
             g.Map = function(map, options) {
