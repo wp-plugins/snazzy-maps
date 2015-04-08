@@ -3,7 +3,7 @@ defined( 'ABSPATH' ) OR exit;
 
     //Removed closures for PHP 5.0.x support
     function _getStyleIndex(&$styles, $id){
-        foreach($styles as $index => $style){
+        foreach((array)$styles as $index => $style){
             if($style['id'] == $id){
                 return $index;
             }
@@ -91,7 +91,7 @@ defined( 'ABSPATH' ) OR exit;
             
         <?php if (count($styles) > 0) { ?>
             <div class="results row">
-                <?php foreach($styles as $index => $style){ 
+                <?php foreach((array)$styles as $index => $style){ 
                     $isEnabled = !is_null($defaultStyle) && $defaultStyle['id'] == $style['id'];
                 ?>        
                     <div class="style col-sm-6 col-md-4 <?php echo $isEnabled ? 'enabled' : '';?>">

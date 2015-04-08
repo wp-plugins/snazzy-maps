@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) OR exit;
 define('PAGE_SIZE', 3);
 
 function render_options($options, $selected){
-    foreach($options as $value => $text){
+    foreach((array)$options as $value => $text){
     ?>
         <option value="<?php echo $value;?>"
                 <?php echo $value == $selected ? 'selected' : '' ?>>

@@ -3,7 +3,7 @@
  * Plugin Name: Snazzy Maps
  * Plugin URI: https://snazzymaps.com/plugins
  * Description: Apply styles to your Google Maps with the official Snazzy Maps WordPress plugin.
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author: Atmist
  * Author URI: http://atmist.com/
  * License: GPL2
@@ -30,6 +30,7 @@ defined( 'ABSPATH' ) OR exit;
 //This API key is used to explore the styles in snazzy maps
 define('API_BASE', 'https://snazzymaps.com/');
 define('API_KEY', 'ecaccc3c-44fa-486c-9503-5d473587a493');
+define('SNAZZY_VERSION_NUMBER', '1.0.3');
 
 if(!defined('_DS')) {
     define('_DS', '/');
@@ -44,7 +45,7 @@ function _object_to_array($object)
     if (is_array($object) OR is_object($object))
     {
         $result = array(); 
-        foreach($object as $key => $value)
+        foreach((array)$object as $key => $value)
         { 
             $result[$key] = _object_to_array($value); 
         }
@@ -68,7 +69,11 @@ function enqueue_script() {
     $uniqueStyle = get_option('SnazzyMapDefaultStyle');
     if(!empty($uniqueStyle) && !is_null($uniqueStyle)){
         $handle = 'snazzymaps-js';
-        wp_enqueue_script($handle, plugins_url('snazzymaps.js', __FILE__), $deps = array('jquery'), $in_footer = true);
+        wp_enqueue_script($handle, 
+                          plugins_url('snazzymaps.js', __FILE__), 
+                          $deps = array('jquery'), 
+                          $ver = SNAZZY_VERSION_NUMBER, 
+                          $in_footer = true);
         
         //We have to use l10n_print_after so we can support older versions of WordPress
         $json = new Services_JSON();

@@ -33,7 +33,8 @@ function admin_enqueue_script($hook){
         
     //Include the javascript
     $handle = 'admin-snazzymaps-js';
-    wp_enqueue_script($handle, plugins_url('index.js', __FILE__), $deps = array('jquery'));
+    wp_enqueue_script($handle, plugins_url('index.js', __FILE__), $deps = array('jquery'),
+                      $ver = SNAZZY_VERSION_NUMBER);
     wp_localize_script($handle, 'SnazzyData', array('API_KEY' => API_KEY,
                                                   'API_BASE' => API_BASE,
                                                   'USER_API_KEY' => get_option('MySnazzyAPIKey', null)));
@@ -42,9 +43,11 @@ function admin_enqueue_script($hook){
         'query-string' . _DS . 'query-string.js',
         'mustache' . _DS . 'mustache.min.js'
     );
-    foreach($node_modules as $index => $node_module){
+    foreach((array)$node_modules as $index => $node_module){
         wp_enqueue_script("admin-node-module-$index", 
-                resourceURL('node_modules' . _DS . $node_module)); 
+                resourceURL('node_modules' . _DS . $node_module),
+                $deps = array(),
+                $ver = SNAZZY_VERSION_NUMBER); 
     }
     
     //Include the bower components
@@ -53,21 +56,28 @@ function admin_enqueue_script($hook){
         _DS . 'bundled' . _DS . 'html5' .
         _DS . 'native.history.js'
     );
-    foreach($bower_components as $index => $bower_component){
+    foreach((array)$bower_components as $index => $bower_component){
         wp_enqueue_script("admin-bower-component-$index", 
-                resourceURL('bower_components' . _DS . $bower_component)); 
+                resourceURL('bower_components' . _DS . $bower_component),
+                $deps = array(),
+                $ver = SNAZZY_VERSION_NUMBER); 
     }
     
     
     //Include additional javascript
     $additional_js = array('jquery.base64.min.js');
-    foreach($additional_js as $index => $js){
+    foreach((array)$additional_js as $index => $js){
         wp_enqueue_script("additional-js-$index", 
-              resourceURL('additional_js' . _DS . $js)); 
+              resourceURL('additional_js' . _DS . $js),
+              $deps = array(),
+              $ver = SNAZZY_VERSION_NUMBER); 
     }
     
     //Include the css
-    wp_enqueue_style('admin-snazzymaps-css', plugins_url('index.css', __FILE__)); 
+    wp_enqueue_style('admin-snazzymaps-css', 
+                      plugins_url('index.css', __FILE__),
+                      $deps = array(),
+                      $ver = SNAZZY_VERSION_NUMBER); 
 }
 
 function admin_add_custom_content(){
@@ -117,7 +127,7 @@ function admin_add_custom_content(){
                 <h2 class="nav-tab-wrapper">
                     <?php
                         $tabs = array('Site Styles', 'Explore', 'Settings', 'Help');
-                        foreach($tabs as $index => $tab){
+                        foreach((array)$tabs as $index => $tab){
                         ?>
                             <a href="?page=snazzy_maps&tab=<?php echo $index;?>"
                                class="nav-tab <?php echo $active_tab == $index ? 'nav-tab-active' : '';?>">
