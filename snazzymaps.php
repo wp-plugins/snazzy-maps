@@ -3,7 +3,7 @@
  * Plugin Name: Snazzy Maps
  * Plugin URI: https://snazzymaps.com/plugins
  * Description: Apply styles to your Google Maps with the official Snazzy Maps WordPress plugin.
- * Version: 1.0.3
+ * Version: 1.0.4
  * Author: Atmist
  * Author URI: http://atmist.com/
  * License: GPL2
@@ -30,7 +30,7 @@ defined( 'ABSPATH' ) OR exit;
 //This API key is used to explore the styles in snazzy maps
 define('API_BASE', 'https://snazzymaps.com/');
 define('API_KEY', 'ecaccc3c-44fa-486c-9503-5d473587a493');
-define('SNAZZY_VERSION_NUMBER', '1.0.3');
+define('SNAZZY_VERSION_NUMBER', '1.0.4');
 
 if(!defined('_DS')) {
     define('_DS', '/');
@@ -73,7 +73,7 @@ function enqueue_script() {
                           plugins_url('snazzymaps.js', __FILE__), 
                           $deps = array('jquery'), 
                           $ver = SNAZZY_VERSION_NUMBER, 
-                          $in_footer = true);
+                          $in_footer = false);
         
         //We have to use l10n_print_after so we can support older versions of WordPress
         $json = new Services_JSON();
@@ -88,7 +88,7 @@ add_action( 'wp_enqueue_scripts', 'enqueue_script');
 add_action( 'admin_enqueue_scripts', 'admin_enqueue_script');
 
 function admin_add_custom_menu(){    
-    add_theme_page('Snazzy Maps', 'Snazzy Maps', 'edit_themes', 'snazzy_maps', 'admin_add_custom_content');
+    add_theme_page('Snazzy Maps', 'Snazzy Maps', 'manage_options', 'snazzy_maps', 'admin_add_custom_content');
 }
 add_action( 'admin_menu', 'admin_add_custom_menu');
 

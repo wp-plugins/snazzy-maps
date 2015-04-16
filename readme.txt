@@ -4,7 +4,7 @@ Donate link: https://snazzymaps.com/about
 Tags: google,maps,google maps,styled maps,styles,color,schemes,themes
 Requires at least: 2.8
 Tested up to: 4.1.1
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -93,6 +93,12 @@ If you happen to find any other map plugins that don't work please send us an em
 3. Your Google Map is now a Snazzy Map!
 
 == Changelog ==
+
+= 1.0.4 =
+Release Date: April 16th, 2015
+
+* Bug Fix: Moved snazzymaps.js from the footer to the head to support additional themes.
+* Bug Fix: Changed the add_theme_page capability from edit_themes to manage_options.
 
 = 1.0.3 =
 Release Date: April 8th, 2015
