@@ -3,8 +3,8 @@ Contributors: atmistinc
 Donate link: https://snazzymaps.com/about
 Tags: google,maps,google maps,styled maps,styles,color,schemes,themes
 Requires at least: 2.8
-Tested up to: 4.1.1
-Stable tag: 1.0.4
+Tested up to: 4.2
+Stable tag: 1.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -93,6 +93,11 @@ If you happen to find any other map plugins that don't work please send us an em
 3. Your Google Map is now a Snazzy Map!
 
 == Changelog ==
+
+= 1.0.5 =
+Release Date: April 24th, 2015
+
+* Bug Fix: Updated snazzymaps.js to copy over the existing Google Maps prototype during our constructor override.
 
 = 1.0.4 =
 Release Date: April 16th, 2015
