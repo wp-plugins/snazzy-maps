@@ -4,7 +4,7 @@ Donate link: https://snazzymaps.com/about
 Tags: google,maps,google maps,styled maps,styles,color,schemes,themes
 Requires at least: 2.8
 Tested up to: 4.2
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,6 +62,8 @@ We've tested our plugin with the following Google Maps plugins. If you find anot
 - [Basic Google Maps Placemarks](https://wordpress.org/plugins/basic-google-maps-placemarks/)
 - [Pronamic Google Maps](https://wordpress.org/plugins/pronamic-google-maps/)
 - [Robo Maps](https://wordpress.org/plugins/robo-maps/)
+- [Google Routeplanner](https://wordpress.org/plugins/google-routeplaner/)
+- [WPMU DEV Google Maps](https://premium.wpmudev.org/project/wordpress-google-maps-plugin/)
 
 = Snazzy Maps doesn't work with my Google Maps plugin! =
 
@@ -93,6 +95,11 @@ If you happen to find any other map plugins that don't work please send us an em
 3. Your Google Map is now a Snazzy Map!
 
 == Changelog ==
+
+= 1.0.6 =
+Release Date: May 11th, 2015
+
+* Bug Fix: Added support for Google Maps asynchronous loading.
 
 = 1.0.5 =
 Release Date: April 24th, 2015
