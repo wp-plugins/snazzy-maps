@@ -20,6 +20,7 @@ jQuery(document).ready(function($){
         data['sort'] = params.sort;
         data['color'] = params.color;
         data['tag'] = params.tag;
+        data['text'] = params.text;
         
         var endPoint = '';
         if(params.type == 'my-styles'){
@@ -120,10 +121,17 @@ jQuery(document).ready(function($){
         q['ppage'] = 1; //Reset the page number because we are changing the results
         replaceGET(q);
     });
+    $('#search-form').live('submit', function(){    
+        replaceGET({
+            text: $(this).find('input[name="text"]').val(),
+            ppage: 1 //Reset the page number because we are changing the results
+        });        
+        return false;
+    });
     
-    $('.style').live('submit', function(){
+    $('.style').live('submit', function(){        
         $(this).find('input[name="new_style"]')
-               .val($.base64.encode(JSON.stringify($(this).data('style'))));
+            .val(encodeURIComponent(JSON.stringify($(this).data('style'))));
     });
         
     //Pagination

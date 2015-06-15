@@ -1,10 +1,10 @@
 <?php
 defined( 'ABSPATH' ) OR exit;
 
-include(plugin_dir_path(__FILE__) . _DS . 'styles.php');
-include(plugin_dir_path(__FILE__) . _DS . 'explore.php');
-include(plugin_dir_path(__FILE__) . _DS . 'settings.php');
-include(plugin_dir_path(__FILE__) . _DS . 'help.php');
+include_once(plugin_dir_path(__FILE__) . _DS . 'styles.php');
+include_once(plugin_dir_path(__FILE__) . _DS . 'explore.php');
+include_once(plugin_dir_path(__FILE__) . _DS . 'settings.php');
+include_once(plugin_dir_path(__FILE__) . _DS . 'help.php');
 
 
 function admin_perform_post (){
@@ -61,16 +61,6 @@ function admin_enqueue_script($hook){
                 resourceURL('bower_components' . _DS . $bower_component),
                 $deps = array(),
                 $ver = SNAZZY_VERSION_NUMBER); 
-    }
-    
-    
-    //Include additional javascript
-    $additional_js = array('jquery.base64.min.js');
-    foreach((array)$additional_js as $index => $js){
-        wp_enqueue_script("additional-js-$index", 
-              resourceURL('additional_js' . _DS . $js),
-              $deps = array(),
-              $ver = SNAZZY_VERSION_NUMBER); 
     }
     
     //Include the css

@@ -3,8 +3,8 @@ Contributors: atmistinc
 Donate link: https://snazzymaps.com/about
 Tags: google,maps,google maps,styled maps,styles,color,schemes,themes
 Requires at least: 2.8
-Tested up to: 4.2
-Stable tag: 1.0.6
+Tested up to: 4.2.2
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -58,6 +58,7 @@ We've tested our plugin with the following Google Maps plugins. If you find anot
 - [Comprehensive Google Map Plugin](https://wordpress.org/plugins/comprehensive-google-map-plugin/)
 - [Leaflet Maps Marker](https://wordpress.org/plugins/leaflet-maps-marker/)
 - [WP Google Map Plugin](https://wordpress.org/plugins/wp-google-map-plugin/)
+- [Map List Pro](https://codecanyon.net/item/map-list-pro-google-maps-location-directories/2620196/)
 - [WP Flexible Map](https://wordpress.org/plugins/wp-flexible-map/)
 - [Basic Google Maps Placemarks](https://wordpress.org/plugins/basic-google-maps-placemarks/)
 - [Pronamic Google Maps](https://wordpress.org/plugins/pronamic-google-maps/)
@@ -95,6 +96,13 @@ If you happen to find any other map plugins that don't work please send us an em
 3. Your Google Map is now a Snazzy Map!
 
 == Changelog ==
+
+= 1.1.0 =
+Release Date: June 15th, 2015
+
+* New Feature: Added search to the explore tab.
+* Bug Fix: Updated save style to properly work with unicode characters.
+* Bug Fix: Changed all include to include_once because of redeclared errors.
 
 = 1.0.6 =
 Release Date: May 11th, 2015
