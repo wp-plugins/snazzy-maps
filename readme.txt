@@ -99,6 +99,7 @@ If you happen to find any other map plugins that don't work please send us an em
 
 = 1.1.1 =
 Release Date: July 21st, 2015
+
 * Bug Fix: Renamed the Services_JSON class to fix a redeclare class error when working with other plugins.
 
 = 1.1.0 =
