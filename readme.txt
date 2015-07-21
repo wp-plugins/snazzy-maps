@@ -4,7 +4,7 @@ Donate link: https://snazzymaps.com/about
 Tags: google,maps,google maps,styled maps,styles,color,schemes,themes
 Requires at least: 2.8
 Tested up to: 4.2.2
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -96,6 +96,10 @@ If you happen to find any other map plugins that don't work please send us an em
 3. Your Google Map is now a Snazzy Map!
 
 == Changelog ==
+
+= 1.1.1 =
+Release Date: July 21st, 2015
+* Bug Fix: Renamed the Services_JSON class to fix a redeclare class error when working with other plugins.
 
 = 1.1.0 =
 Release Date: June 15th, 2015

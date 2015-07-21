@@ -29,7 +29,7 @@ defined( 'ABSPATH' ) OR exit;
         
         //When a new style is selected we have to go through some checks
         if(isset($_POST['new_style'])){
-            $json = new Services_JSON();
+            $json = new SnazzyMaps_Services_JSON();
             $newStyle = _object_to_array($json->decode(urldecode($_POST['new_style'])));
             if(!_getStyle($styles, $newStyle['id'])){
                 $styles[] = $newStyle;
