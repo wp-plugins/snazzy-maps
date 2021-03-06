@@ -1,6 +1,4 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
  * Converts to and from JSON format.
  *
@@ -55,7 +53,7 @@
  * @license     http://www.opensource.org/licenses/bsd-license.php
  * @link        http://pear.php.net/pepr/pepr-proposal-show.php?id=198
  */
-
+namespace SnazzyMaps;
 /**
  * Marker constant for SnazzyMaps_Services_JSON::decode(), used to flag stack state
  */
@@ -98,7 +96,7 @@ define('SnazzyMaps_Services_JSON_SUPPRESS_ERRORS', 32);
  *
  * <code>
  * // create a new instance of SnazzyMaps_Services_JSON
- * $json = new SnazzyMaps_Services_JSON();
+ * $json = new SnazzMaps_Services_JSON();
  *
  * // convert a complexe value to JSON notation, and send it to the browser
  * $value = array('foo', 'bar', array(1, 2, 'baz'), array(3, array(4)));
@@ -130,7 +128,7 @@ class SnazzyMaps_Services_JSON
     *                                   bubble up with an error, so all return values
     *                                   from encode() should be checked with isError()
     */
-    function SnazzyMaps_Services_JSON($use = 0)
+    function __construct($use = 0)
     {
         $this->use = $use;
     }
@@ -153,7 +151,7 @@ class SnazzyMaps_Services_JSON
             return mb_convert_encoding($utf16, 'UTF-8', 'UTF-16');
         }
 
-        $bytes = (ord($utf16{0}) << 8) | ord($utf16{1});
+        $bytes = (ord($utf16[0]) << 8) | ord($utf16[1]);
 
         switch(true) {
             case ((0x7F & $bytes) == $bytes):
@@ -206,17 +204,17 @@ class SnazzyMaps_Services_JSON
             case 2:
                 // return a UTF-16 character from a 2-byte UTF-8 char
                 // see: http://www.cl.cam.ac.uk/~mgk25/unicode.html#utf-8
-                return chr(0x07 & (ord($utf8{0}) >> 2))
-                     . chr((0xC0 & (ord($utf8{0}) << 6))
-                         | (0x3F & ord($utf8{1})));
+                return chr(0x07 & (ord($utf8[0]) >> 2))
+                     . chr((0xC0 & (ord($utf8[0]) << 6))
+                         | (0x3F & ord($utf8[1])));
 
             case 3:
                 // return a UTF-16 character from a 3-byte UTF-8 char
                 // see: http://www.cl.cam.ac.uk/~mgk25/unicode.html#utf-8
-                return chr((0xF0 & (ord($utf8{0}) << 4))
-                         | (0x0F & (ord($utf8{1}) >> 2)))
-                     . chr((0xC0 & (ord($utf8{1}) << 6))
-                         | (0x7F & ord($utf8{2})));
+                return chr((0xF0 & (ord($utf8g) << 4))
+                         | (0x0F & (ord($utf8[1]) >> 2)))
+                     . chr((0xC0 & (ord($utf8[1]) << 6))
+                         | (0x7F & ord($utf8[2])));
         }
 
         // ignoring UTF-32 for now, sorry
@@ -261,7 +259,7 @@ class SnazzyMaps_Services_JSON
                 */
                 for ($c = 0; $c < $strlen_var; ++$c) {
 
-                    $ord_var_c = ord($var{$c});
+                    $ord_var_c = ord($var[$c]);
 
                     switch (true) {
                         case $ord_var_c == 0x08:
@@ -284,18 +282,18 @@ class SnazzyMaps_Services_JSON
                         case $ord_var_c == 0x2F:
                         case $ord_var_c == 0x5C:
                             // double quote, slash, slosh
-                            $ascii .= '\\'.$var{$c};
+                            $ascii .= '\\'.$var[$c];
                             break;
 
                         case (($ord_var_c >= 0x20) && ($ord_var_c <= 0x7F)):
                             // characters U-00000000 - U-0000007F (same as ASCII)
-                            $ascii .= $var{$c};
+                            $ascii .= $var[$c];
                             break;
 
                         case (($ord_var_c & 0xE0) == 0xC0):
                             // characters U-00000080 - U-000007FF, mask 110XXXXX
                             // see http://www.cl.cam.ac.uk/~mgk25/unicode.html#utf-8
-                            $char = pack('C*', $ord_var_c, ord($var{$c + 1}));
+                            $char = pack('C*', $ord_var_c, ord($var[$c + 1]));
                             $c += 1;
                             $utf16 = $this->utf82utf16($char);
                             $ascii .= sprintf('\u%04s', bin2hex($utf16));
@@ -305,8 +303,8 @@ class SnazzyMaps_Services_JSON
                             // characters U-00000800 - U-0000FFFF, mask 1110XXXX
                             // see http://www.cl.cam.ac.uk/~mgk25/unicode.html#utf-8
                             $char = pack('C*', $ord_var_c,
-                                         ord($var{$c + 1}),
-                                         ord($var{$c + 2}));
+                                         ord($var[$c + 1]),
+                                         ord($var[$c + 2]));
                             $c += 2;
                             $utf16 = $this->utf82utf16($char);
                             $ascii .= sprintf('\u%04s', bin2hex($utf16));
@@ -316,9 +314,9 @@ class SnazzyMaps_Services_JSON
                             // characters U-00010000 - U-001FFFFF, mask 11110XXX
                             // see http://www.cl.cam.ac.uk/~mgk25/unicode.html#utf-8
                             $char = pack('C*', $ord_var_c,
-                                         ord($var{$c + 1}),
-                                         ord($var{$c + 2}),
-                                         ord($var{$c + 3}));
+                                         ord($var[$c + 1]),
+                                         ord($var[$c + 2]),
+                                         ord($var[$c + 3]));
                             $c += 3;
                             $utf16 = $this->utf82utf16($char);
                             $ascii .= sprintf('\u%04s', bin2hex($utf16));
@@ -328,10 +326,10 @@ class SnazzyMaps_Services_JSON
                             // characters U-00200000 - U-03FFFFFF, mask 111110XX
                             // see http://www.cl.cam.ac.uk/~mgk25/unicode.html#utf-8
                             $char = pack('C*', $ord_var_c,
-                                         ord($var{$c + 1}),
-                                         ord($var{$c + 2}),
-                                         ord($var{$c + 3}),
-                                         ord($var{$c + 4}));
+                                         ord($var[$c + 1]),
+                                         ord($var[$c + 2]),
+                                         ord($var[$c + 3]),
+                                         ord($var[$c + 4]));
                             $c += 4;
                             $utf16 = $this->utf82utf16($char);
                             $ascii .= sprintf('\u%04s', bin2hex($utf16));
@@ -341,11 +339,11 @@ class SnazzyMaps_Services_JSON
                             // characters U-04000000 - U-7FFFFFFF, mask 1111110X
                             // see http://www.cl.cam.ac.uk/~mgk25/unicode.html#utf-8
                             $char = pack('C*', $ord_var_c,
-                                         ord($var{$c + 1}),
-                                         ord($var{$c + 2}),
-                                         ord($var{$c + 3}),
-                                         ord($var{$c + 4}),
-                                         ord($var{$c + 5}));
+                                         ord($var[$c + 1]),
+                                         ord($var[$c + 2]),
+                                         ord($var[$c + 3]),
+                                         ord($var[$c + 4]),
+                                         ord($var[$c + 5]));
                             $c += 5;
                             $utf16 = $this->utf82utf16($char);
                             $ascii .= sprintf('\u%04s', bin2hex($utf16));
@@ -520,7 +518,7 @@ class SnazzyMaps_Services_JSON
                     for ($c = 0; $c < $strlen_chrs; ++$c) {
 
                         $substr_chrs_c_2 = substr($chrs, $c, 2);
-                        $ord_chrs_c = ord($chrs{$c});
+                        $ord_chrs_c = ord($chrs[$c]);
 
                         switch (true) {
                             case $substr_chrs_c_2 == '\b':
@@ -550,11 +548,11 @@ class SnazzyMaps_Services_JSON
                             case $substr_chrs_c_2 == '\\/':
                                 if (($delim == '"' && $substr_chrs_c_2 != '\\\'') ||
                                    ($delim == "'" && $substr_chrs_c_2 != '\\"')) {
-                                    $utf8 .= $chrs{++$c};
+                                    $utf8 .= $chrs[++$c];
                                 }
                                 break;
 
-                            case preg_match('/\\\u[0-9A-F]{4}/i', substr($chrs, $c, 6)):
+                            case preg_match('/\\\u[0-9A-F][4]/i', substr($chrs, $c, 6)):
                                 // single, escaped unicode character
                                 $utf16 = chr(hexdec(substr($chrs, ($c + 2), 2)))
                                        . chr(hexdec(substr($chrs, ($c + 4), 2)));
@@ -563,7 +561,7 @@ class SnazzyMaps_Services_JSON
                                 break;
 
                             case ($ord_chrs_c >= 0x20) && ($ord_chrs_c <= 0x7F):
-                                $utf8 .= $chrs{$c};
+                                $utf8 .= $chrs[$c];
                                 break;
 
                             case ($ord_chrs_c & 0xE0) == 0xC0:
@@ -610,7 +608,7 @@ class SnazzyMaps_Services_JSON
                 } elseif (preg_match('/^\[.*\]$/s', $str) || preg_match('/^\{.*\}$/s', $str)) {
                     // array, or object notation
 
-                    if ($str{0} == '[') {
+                    if ($str[0] == '[') {
                         $stk = array(SnazzyMaps_Services_JSON_IN_ARR);
                         $arr = array();
                     } else {
@@ -619,7 +617,7 @@ class SnazzyMaps_Services_JSON
                             $obj = array();
                         } else {
                             $stk = array(SnazzyMaps_Services_JSON_IN_OBJ);
-                            $obj = new stdClass();
+                            $obj = new \stdClass();
                         }
                     }
 
@@ -649,7 +647,7 @@ class SnazzyMaps_Services_JSON
                         $top = end($stk);
                         $substr_chrs_c_2 = substr($chrs, $c, 2);
 
-                        if (($c == $strlen_chrs) || (($chrs{$c} == ',') && ($top['what'] == SnazzyMaps_Services_JSON_SLICE))) {
+                        if (($c == $strlen_chrs) || (($chrs[$c] == ',') && ($top['what'] == SnazzyMaps_Services_JSON_SLICE))) {
                             // found a comma that is not inside a string, array, etc.,
                             // OR we've reached the end of the character list
                             $slice = substr($chrs, $top['where'], ($c - $top['where']));
@@ -691,12 +689,12 @@ class SnazzyMaps_Services_JSON
 
                             }
 
-                        } elseif ((($chrs{$c} == '"') || ($chrs{$c} == "'")) && ($top['what'] != SnazzyMaps_Services_JSON_IN_STR)) {
+                        } elseif ((($chrs[$c] == '"') || ($chrs[$c] == "'")) && ($top['what'] != SnazzyMaps_Services_JSON_IN_STR)) {
                             // found a quote, and we are not inside a string
-                            array_push($stk, array('what' => SnazzyMaps_Services_JSON_IN_STR, 'where' => $c, 'delim' => $chrs{$c}));
+                            array_push($stk, array('what' => SnazzyMaps_Services_JSON_IN_STR, 'where' => $c, 'delim' => $chrs[$c]));
                             //print("Found start of string at {$c}\n");
 
-                        } elseif (($chrs{$c} == $top['delim']) &&
+                        } elseif (($chrs[$c] == $top['delim']) &&
                                  ($top['what'] == SnazzyMaps_Services_JSON_IN_STR) &&
                                  ((strlen(substr($chrs, 0, $c)) - strlen(rtrim(substr($chrs, 0, $c), '\\'))) % 2 != 1)) {
                             // found a quote, we're in a string, and it's not escaped
@@ -705,24 +703,24 @@ class SnazzyMaps_Services_JSON
                             array_pop($stk);
                             //print("Found end of string at {$c}: ".substr($chrs, $top['where'], (1 + 1 + $c - $top['where']))."\n");
 
-                        } elseif (($chrs{$c} == '[') &&
+                        } elseif (($chrs[$c] == '[') &&
                                  in_array($top['what'], array(SnazzyMaps_Services_JSON_SLICE, SnazzyMaps_Services_JSON_IN_ARR, SnazzyMaps_Services_JSON_IN_OBJ))) {
                             // found a left-bracket, and we are in an array, object, or slice
                             array_push($stk, array('what' => SnazzyMaps_Services_JSON_IN_ARR, 'where' => $c, 'delim' => false));
                             //print("Found start of array at {$c}\n");
 
-                        } elseif (($chrs{$c} == ']') && ($top['what'] == SnazzyMaps_Services_JSON_IN_ARR)) {
+                        } elseif (($chrs[$c] == ']') && ($top['what'] == SnazzyMaps_Services_JSON_IN_ARR)) {
                             // found a right-bracket, and we're in an array
                             array_pop($stk);
                             //print("Found end of array at {$c}: ".substr($chrs, $top['where'], (1 + $c - $top['where']))."\n");
 
-                        } elseif (($chrs{$c} == '{') &&
+                        } elseif (($chrs[$c] == '{') &&
                                  in_array($top['what'], array(SnazzyMaps_Services_JSON_SLICE, SnazzyMaps_Services_JSON_IN_ARR, SnazzyMaps_Services_JSON_IN_OBJ))) {
                             // found a left-brace, and we are in an array, object, or slice
                             array_push($stk, array('what' => SnazzyMaps_Services_JSON_IN_OBJ, 'where' => $c, 'delim' => false));
                             //print("Found start of object at {$c}\n");
 
-                        } elseif (($chrs{$c} == '}') && ($top['what'] == SnazzyMaps_Services_JSON_IN_OBJ)) {
+                        } elseif (($chrs[$c] == ']') && ($top['what'] == SnazzyMaps_Services_JSON_IN_OBJ)) {
                             // found a right-brace, and we're in an object
                             array_pop($stk);
                             //print("Found end of object at {$c}: ".substr($chrs, $top['where'], (1 + $c - $top['where']))."\n");
@@ -780,7 +778,7 @@ if (class_exists('PEAR_Error')) {
 
     class SnazzyMaps_Services_JSON_Error extends PEAR_Error
     {
-        function SnazzyMaps_Services_JSON_Error($message = 'unknown error', $code = null,
+        function __construct($message = 'unknown error', $code = null,
                                      $mode = null, $options = null, $userinfo = null)
         {
             parent::PEAR_Error($message, $code, $mode, $options, $userinfo);
@@ -794,7 +792,7 @@ if (class_exists('PEAR_Error')) {
      */
     class SnazzyMaps_Services_JSON_Error
     {
-        function SnazzyMaps_Services_JSON_Error($message = 'unknown error', $code = null,
+        function __construct($message = 'unknown error', $code = null,
                                      $mode = null, $options = null, $userinfo = null)
         {
 
